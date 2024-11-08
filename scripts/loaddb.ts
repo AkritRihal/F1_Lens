@@ -1,14 +1,10 @@
-// import { DataAPIClient } from "@datastax/astra-db-ts"
-// import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer"
+import { DataAPIClient } from "@datastax/astra-db-ts"
+import { PuppeteerWebBaseLoader } from "@langchain/community/document_loaders/web/puppeteer";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
+// will split the large chunks into smaller ones 
 import OpenAI from "openai"
 
-
-// import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
-// // will split the large chunks into smaller ones 
-
 import "dotenv/config"  // for env variables
-import { DataAPIClient } from "@datastax/astra-db-ts"
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
 
 type SimilarityMetric = "dot_product" | "cosine" | "euclidean"
 
@@ -66,8 +62,20 @@ const scrapePage = async (url:string)=>{
     const loader = new PuppeteerWebBaseLoader(url,{
         launchOptions:{
             headless: true,
+        },
+
+        gotoOptions:{
+            waitUntil :  "domcontentloaded"
+        },
+
+        evaluate : async(page, browser)=>{
+            const result = await page.evaluate(()=> document.body.innerHTML)
+            await browser.close()
+            return result
         }
     })
-
+    return (await loader.scrape())?.replace(/<[>^]*?/gm, '')
 }
+
+createCollection().then(()=>loadSampleData())
 
