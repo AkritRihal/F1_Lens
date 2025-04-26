@@ -27,12 +27,12 @@ const Home = ()=>{
 
     return(
         <main>
-            <Image src = {F1Logo} width = "250" alt = "F1GPT Logo"></Image>
+            <Image src = {F1Logo} width = "250" alt = "F1Lens Logo"></Image>
             <section className={noMessages? "": "populated"}>
                 {noMessages ? (
                     <>
                         <p className = "starter-text">
-                            F1GPT: Your Ultimate F1 Game Companion! Get fast, reliable answers to all your questions about the F1 games. From game strategies and car setups to driver insights and race simulations, F1GPT is here to elevate your gaming experience and help you stay ahead of the competition.
+                            F1Lens: Your Ultimate F1 Game Companion! Get fast, reliable answers to all your questions about the F1 games. From game strategies and car setups to driver insights and race simulations, F1Lens is here to elevate your gaming experience and help you stay ahead of the competition.
                         </p>
                         <br/>
                         <PromptSuggestionsRow onPromptClick={handlePrompt}/>
@@ -47,6 +47,7 @@ const Home = ()=>{
 
             <form onSubmit={handleSubmit}>
                 <input className="question-box" onChange = {handleInputChange} value = {input} placeholder= "Ask me something !"/>
+                <input type = "submit"/>
             </form>
 
         </main>
